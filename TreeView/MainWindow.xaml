@@ -3,39 +3,57 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Loaded="Window_Loaded"
         xmlns:local="clr-namespace:TreeView"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
+        <!--
+        ItemSource sets the object source that gives us the folder/files names & images
+        In this case, we're Binding to Items (DirectoryStructureViewModel.cs)
+        -->
+        <TreeView x:Name="FolderView" ItemsSource="{Binding Items}">
 
-        <TreeView x:Name="FolderView" Grid.RowSpan="2">
-            <TreeView.Resources>
-                <!-- Styles only when the object is a TreeViewItem-->
+            <!--Creating a styles sheet for TreeViewItems specifically-->
+            <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="HeaderTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <!-- All of this is essentially to replace the HeaderTemplate-->
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="20" Margin="3" 
-                                        Source="{Binding RelativeSource=
-                                            {RelativeSource Mode=FindAncestor, 
-                                            AncestorType={x:Type TreeViewItem}},
-                                            Path=Tag,
-                                            Converter={x:Static 
-                                                local:HeaderToImageConverter.Instance
-                                    }}"/>
-                                    <!-- Simple binding to fill the text with what we get from
-                                    the object, instaed of hardcoding it-->
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
+                    <!-- 
+                    Property tells it what to apply to the Value
+                    Value is setting the value that is effect by the property
+                    Basically saying when the /\ TreeViewItem is \/ IsExpanded 
+                    use IsExpanded (DirectoryItemViewModel.cs)
+                    -->
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                 </Style>
+            </TreeView.ItemContainerStyle>
 
-            </TreeView.Resources>
+            <!--setting the DataTemplate used to display each item-->
+            <TreeView.ItemTemplate>
+                <!--
+                The DataTemplate we're using because it supports TreeViewItems
+                The source of our objects (ItemSource) is bound to Children 
+                (DirectoryItemViewModel.cs)
+                -->
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <!--
+                        Here we're setting the Images Binding to
+                        Type (DirectoryItemViewModel.cs) which is manipulated by the Converter
+                        
+                        We're also setting a Converter so that we can change which 
+                        image appears for files and folders. HeaderToImageConverter 
+                        returns a BitMapImage of this image
+                        -->
+                        <Image Width="20" Margin="3"
+                            Source="{Binding Type,
+                                Converter={x:Static local:HeaderToImageConverter.Instance}}"/>
+                        <!--
+                        We're setting the text bolock to fill based on the Binding 
+                        Name (DirectoryItemViewModel.cs)
+                        -->
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
         
     </Grid>
