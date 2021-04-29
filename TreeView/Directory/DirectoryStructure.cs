@@ -69,7 +69,7 @@ namespace TreeView
             catch { }
 
             #endregion
-            // returns the List<DirectoryItem> to 
+            // returns the List<DirectoryItem> to DirectoryItemViewModel (var children)
             return items;
         }
 

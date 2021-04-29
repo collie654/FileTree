@@ -24,11 +24,12 @@ namespace TreeView
             // gets a List<DirectoryItem> of all the drives
             var children = DirectoryStructure.GetLogicalDrives();
 
-            // create the view models from the data
-            // Creates a collection of data (ObservableCollection) that gives notifications when the list changes out of the children being passed in. 
-            // selects each drive from the List and creates a new DirectoryItemViewModel out of it, filling in its fullPath and Type
-            // **** THIS IS WHAT FolderView IS BOUND TO ****
-            // and hierarchially speaking, what the Setter (IsExpanded), HierarchialDataTemplate (Children), and the Image (Type) are bound to. 
+            
+
+            /* turns the List of DirectoryItem into a List of DirectoryItemViewModel
+             * This is what FolderView is using as its source for the drives. After this is finished running completely, 
+             * the drives show up on the window. 
+             */
             this.Items = new ObservableCollection<DirectoryItemViewModel>
                 (children.Select(drive => new DirectoryItemViewModel(drive.FullPath, DirectoryItemType.Drive)));   
         }

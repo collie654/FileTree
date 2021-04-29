@@ -47,7 +47,7 @@
                             Source="{Binding Type,
                                 Converter={x:Static local:HeaderToImageConverter.Instance}}"/>
                         <!--
-                        We're setting the text bolock to fill based on the Binding 
+                        We're setting the text block to fill based on the Binding 
                         Name (DirectoryItemViewModel.cs)
                         -->
                         <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>

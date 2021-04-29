@@ -9,10 +9,31 @@ namespace TreeView
     /// </summary>
     class DirectoryItemViewModel : BaseViewModel
     {
+
+        #region Constructor
+
+        /// <summary>
+        /// default constructor
+        /// </summary>
+        /// <param name="fullPath"> full path of this item</param>
+        /// <param name="type">the type of item</param>
+        public DirectoryItemViewModel(string fullPath, DirectoryItemType type)
+        {
+            // create commands
+            this.ExpandCommand = new RelayCommand(Expand);
+
+            //set path and type
+            this.FullPath = fullPath;
+            this.Type = type;
+
+            // setup the children as needed
+            this.ClearChildren();
+        }
+        #endregion
+
         #region Public Properties
         /// <summary>
         /// The type of this item
-        /// *** THIS IS WHAT 
         /// </summary>
         public DirectoryItemType Type { get; set; }
 
@@ -79,28 +100,6 @@ namespace TreeView
 
         #endregion
 
-        #region Constructor
-
-        /// <summary>
-        /// default constructor
-        /// </summary>
-        /// <param name="fullPath"> full path of this item</param>
-        /// <param name="type">the type of item</param>
-        public DirectoryItemViewModel(string fullPath, DirectoryItemType type)
-        {
-            // create commands
-            this.ExpandCommand = new RelayCommand(Expand);
-
-            //set path and type
-            this.FullPath = fullPath;
-            this.Type = type;
-
-            // setup the children as needed
-            this.ClearChildren();
-        }
-
-        #endregion
-
         #region Helper Methods
         /// <summary>
         /// removes all children from the list, adding a dummy item to show the expand icon if required
@@ -115,7 +114,6 @@ namespace TreeView
                 this.Children.Add(null);
         }
         #endregion
-
 
         /// <summary>
         /// expands this directory and finds all children
